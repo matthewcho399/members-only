@@ -21,9 +21,10 @@ CREATE TABLE IF NOT EXISTS messages (
 );`;
 
 const usersMessagesTable = `
+CREATE TABLE IF NOT EXISTS users_messages (
     user_id INTEGER,
     message_id INTEGER
-`;
+);`;
 
 async function main() {
   try {
