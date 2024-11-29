@@ -7,20 +7,19 @@ const nameLengthErr = "Must be between 2 and 30 characters";
 const validUsernameErr =
   "Must only contain letters, numbers, underscores, periods, and hyphens";
 const usernameLengthErr = "Must be between 5 and 20 characters";
-const passwordUppercaseErr = "Must include at least one uppercase letter";
-const passwordSpecialCharErr =
-  "Must include at least one special character (e.g., @$!%*?&)";
-const passwordLengthErr = "Must contain at least 6 characters";
+const passwordReqErr =
+  "Password must include at least one uppercase letter, one number, and one special character (e.g., @$!%*?&).";
+const passwordLengthErr = "Must contain at least 7 characters";
 const confirmPasswordErr = "Passwords must match";
 
 const validateUser = [
-  body("first-name")
+  body("firstName")
     .trim()
     .isAlpha()
     .withMessage(validNameErr)
     .isLength({ min: 2, max: 30 })
     .withMessage(nameLengthErr),
-  body("last-name")
+  body("lastName")
     .trim()
     .isAlpha()
     .withMessage(validNameErr)
@@ -34,13 +33,11 @@ const validateUser = [
     .withMessage(usernameLengthErr),
   body("password")
     .trim()
-    .matches(/[A-Z]/)
-    .withMessage(passwordUppercaseErr)
-    .matches(/[@$!%*?&]/)
-    .withMessage(passwordSpecialCharErr)
-    .isLength({ min: 6, max: 20 })
+    .matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/)
+    .withMessage(passwordReqErr)
+    .isLength({ min: 7, max: 20 })
     .withMessage(passwordLengthErr),
-  body("confirm-password").custom((value, { req }) => {
+  body("confirmPassword").custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error(confirmPasswordErr);
     }
@@ -51,14 +48,20 @@ const validateUser = [
 const signUpPost = [
   validateUser,
   async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("sign-up-form", {
+        errors: errors.array(),
+      });
+    }
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).render("sign-up-form", {
-          errors: errors.array(),
-        });
-      }
-      await db.createUser();
+      const { firstName, lastName, username, password } = req.body;
+      bcrypt.hash(password, 10, async (err, hashedPassword) => {
+        if (err) {
+          console.error(err);
+        }
+        await db.createUser(firstName, lastName, username, hashedPassword);
+      });
       res.redirect("/");
     } catch (err) {
       return next(err);
