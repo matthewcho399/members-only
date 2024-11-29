@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sign Up</title>
+  </head>
+  <body>
+    <h1>Join The Club?</h1>
+    <form action="membership" method="POST">
+      <%- include("./partials/errors.ejs") %>
+      <label for="passcode">Enter the passcode:</label>
+      <input id="passcode" name="passcode" type="text" />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
