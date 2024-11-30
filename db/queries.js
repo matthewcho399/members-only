@@ -11,7 +11,7 @@ async function createUser(firstName, lastName, username, password) {
   }
 }
 
-async function getUser(username) {
+async function getUserByUsername(username) {
   try {
     const { rows } = await pool.query(
       "SELECT * FROM users WHERE username = $1;",
@@ -23,7 +23,19 @@ async function getUser(username) {
   }
 }
 
+async function getUserById(id) {
+  try {
+    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1;", [
+      id,
+    ]);
+    return rows[0];
+  } catch (e) {
+    throw new Error("Couldn't get user");
+  }
+}
+
 module.exports = {
   createUser,
-  getUser,
+  getUserByUsername,
+  getUserById,
 };

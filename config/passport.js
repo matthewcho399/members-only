@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      const user = await db.getUser(username);
+      const user = await db.getUserByUsername(username);
       console.log("user", user);
 
       if (!user) {
@@ -24,3 +24,16 @@ passport.use(
     }
   })
 );
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await db.getUserById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
