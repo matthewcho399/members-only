@@ -1,6 +1,7 @@
 const db = require("../db/queries");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
 const validNameErr = "Must only contain letters";
 const nameLengthErr = "Must be between 2 and 30 characters";
@@ -69,16 +70,24 @@ const signUpPost = [
   },
 ];
 
-async function membershipGet(req, res) {
-  res.render("membership");
-}
-
 async function membershipPost(req, res) {
-  res.redirect("/");
+  if (
+    req.body.passcode === process.env.PASSCODE &&
+    req.user.membership_status === false
+  ) {
+    await db.grantMembership(req.user.id);
+    res.render("membership", { msg: "Membership granted!" });
+  } else if (
+    req.body.passcode === process.env.PASSCODE &&
+    req.user.membership_status === true
+  ) {
+    res.render("membership", { msg: "Already a member" });
+  } else if (req.body.passcode !== process.env.PASSCODE) {
+    res.render("membership", { msg: "Incorrect passcode" });
+  }
 }
 
 module.exports = {
   signUpPost,
-  membershipGet,
   membershipPost,
 };

@@ -34,8 +34,21 @@ async function getUserById(id) {
   }
 }
 
+async function grantMembership(id) {
+  console.log("granting membership");
+  try {
+    await pool.query(
+      "UPDATE users SET membership_status = true WHERE id = $1;",
+      [id]
+    );
+  } catch (e) {
+    throw new Error("Couldn't grant membership");
+  }
+}
+
 module.exports = {
   createUser,
   getUserByUsername,
   getUserById,
+  grantMembership,
 };
