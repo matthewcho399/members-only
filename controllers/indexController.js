@@ -69,11 +69,16 @@ const signUpPost = [
   },
 ];
 
+async function membershipGet(req, res) {
+  res.render("membership");
+}
+
 async function membershipPost(req, res) {
   res.redirect("/");
 }
 
 module.exports = {
   signUpPost,
+  membershipGet,
   membershipPost,
 };

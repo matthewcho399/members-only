@@ -2,6 +2,7 @@ const { Router } = require("express");
 const controller = require("../controllers/indexController");
 const passport = require("passport");
 const router = Router();
+const { isAuth, isMember } = require("../lib/authMiddleware");
 
 router.get("/", (req, res) => {
   res.send("hew");
@@ -19,8 +20,8 @@ router.post(
   })
 );
 
-router.get("/membership", (req, res) => res.render("membership"));
-router.post("/membership", controller.membershipPost);
+router.get("/membership", isAuth, (req, res) => res.render("membership"));
+router.post("/membership", isAuth, controller.membershipPost);
 
 router.get("/login-success", (req, res) =>
   res.send(
@@ -42,12 +43,8 @@ router.get("/logout", function (req, res, next) {
   });
 });
 
-router.get("/protected-route", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.send("<p>You are authenticated.</p> <a href='/logout'>Logout</a>");
-  } else {
-    res.send("<p>You are not authenticated.<a href='/login'>Login</a></p>");
-  }
+router.get("/protected-route", isAuth, (req, res) => {
+  res.send("<p>You are authenticated.</p> <a href='/logout'>Logout</a>");
 });
 
 module.exports = router;
