@@ -15,19 +15,13 @@ router.get("/login", (req, res) => res.render("login-form"));
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/login-success",
+    successRedirect: "/dashboard",
     failureRedirect: "/login-failure",
   })
 );
 
 router.get("/membership", isAuth, (req, res) => res.render("membership"));
 router.post("/membership", isAuth, controller.membershipPost);
-
-router.get("/login-success", (req, res) =>
-  res.send(
-    "<p>You've successfully logged in</p> <a href='/protected-route'>Go to protected route"
-  )
-);
 
 router.get("/login-failure", (req, res) => {
   res.send("Wrong username or password");
@@ -46,5 +40,7 @@ router.get("/logout", function (req, res, next) {
 router.get("/protected-route", isAuth, (req, res) => {
   res.send("<p>You are authenticated.</p> <a href='/logout'>Logout</a>");
 });
+
+router.get("/dashboard", isAuth, controller.dashboardGet);
 
 module.exports = router;

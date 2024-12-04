@@ -45,7 +45,13 @@ async function membershipPost(req, res) {
   }
 }
 
+async function dashboardGet(req, res) {
+  const messages = await db.getAllMessages();
+  res.render("dashboard", { membership: req.user.membership_status, messages });
+}
+
 module.exports = {
   signUpPost,
   membershipPost,
+  dashboardGet,
 };

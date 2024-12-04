@@ -35,7 +35,6 @@ async function getUserById(id) {
 }
 
 async function grantMembership(id) {
-  console.log("granting membership");
   try {
     await pool.query(
       "UPDATE users SET membership_status = true WHERE id = $1;",
@@ -46,9 +45,19 @@ async function grantMembership(id) {
   }
 }
 
+async function getAllMessages() {
+  try {
+    const { rows } = await pool.query("SELECT * FROM messages");
+    return rows;
+  } catch (e) {
+    throw new Error("Couldn't get all messages");
+  }
+}
+
 module.exports = {
   createUser,
   getUserByUsername,
   getUserById,
   grantMembership,
+  getAllMessages,
 };
