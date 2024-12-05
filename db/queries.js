@@ -1,3 +1,4 @@
+const { link } = require("../routes");
 const pool = require("./pool");
 
 async function createUser(firstName, lastName, username, password) {
@@ -54,10 +55,35 @@ async function getAllMessages() {
   }
 }
 
+async function createMessage(title, text) {
+  try {
+    const message = await pool.query(
+      "INSERT INTO messages (title, text) VALUES ($1, $2) RETURNING id;",
+      [title, text]
+    );
+    return message.rows[0].id;
+  } catch (e) {
+    throw new Error("Couldn't create message");
+  }
+}
+
+async function linkMessageToUser(user_id, message_id) {
+  try {
+    await pool.query(
+      "INSERT INTO users_messages (user_id, message_id) VALUES ($1, $2);",
+      [user_id, message_id]
+    );
+  } catch (e) {
+    throw new Error("Couldn't link message to user");
+  }
+}
+
 module.exports = {
   createUser,
   getUserByUsername,
   getUserById,
   grantMembership,
   getAllMessages,
+  createMessage,
+  linkMessageToUser,
 };

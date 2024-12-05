@@ -1,7 +1,7 @@
 const db = require("../db/queries");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
-const { validateUser } = require("../lib/validateUser");
+const { validateUser, validateMessage } = require("../lib/validators");
 require("dotenv").config();
 
 const signUpPost = [
@@ -21,7 +21,7 @@ const signUpPost = [
         }
         await db.createUser(firstName, lastName, username, hashedPassword);
       });
-      res.redirect("/");
+      res.redirect("/login");
     } catch (err) {
       return next(err);
     }
@@ -50,8 +50,30 @@ async function dashboardGet(req, res) {
   res.render("dashboard", { membership: req.user.membership_status, messages });
 }
 
+const newMessagePost = [
+  validateMessage,
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("message-form", {
+        errors: errors.array(),
+      });
+    }
+    try {
+      const user_id = req.user.id;
+      const { title, text } = req.body;
+      const message_id = await db.createMessage(title, text);
+      await db.linkMessageToUser(user_id, message_id);
+      res.redirect("/dashboard");
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
+
 module.exports = {
   signUpPost,
   membershipPost,
   dashboardGet,
+  newMessagePost,
 };

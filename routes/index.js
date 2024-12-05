@@ -5,7 +5,7 @@ const router = Router();
 const { isAuth, isMember } = require("../lib/authMiddleware");
 
 router.get("/", (req, res) => {
-  res.send("hew");
+  res.redirect("/login");
 });
 
 router.get("/sign-up", (req, res) => res.render("sign-up-form"));
@@ -33,14 +33,13 @@ router.get("/logout", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.redirect("/protected-route");
+    res.redirect("/login");
   });
 });
 
-router.get("/protected-route", isAuth, (req, res) => {
-  res.send("<p>You are authenticated.</p> <a href='/logout'>Logout</a>");
-});
-
 router.get("/dashboard", isAuth, controller.dashboardGet);
+
+router.get("/new-message", isAuth, (req, res) => res.render("message-form"));
+router.post("/new-message", isAuth, controller.newMessagePost);
 
 module.exports = router;

@@ -9,13 +9,13 @@
     <form action="/sign-up" method="POST">
       <%- include("./partials/errors.ejs") %>
       <label for="firstName">First Name</label>
-      <input id="firstName" name="firstName" type="text" />
+      <input id="firstName" name="firstName" type="text" maxlength="30" />
       <label for="lastName">Last Name</label>
-      <input id="lastName" name="lastName" type="text" />
+      <input id="lastName" name="lastName" type="text" maxlength="30" />
       <label for="username">Username</label>
-      <input id="username" name="username" type="text" />
+      <input id="username" name="username" type="text" maxlength="20" />
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
+      <input id="password" name="password" type="password" maxlength="20" />
       <label for="confirmPassword">Confirm Password</label>
       <input id="confirmPassword" name="confirmPassword" type="password" />
       <input type="submit" value="Sign Up" />
