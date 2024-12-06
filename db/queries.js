@@ -48,7 +48,20 @@ async function grantMembership(id) {
 
 async function getAllMessages() {
   try {
-    const { rows } = await pool.query("SELECT * FROM messages");
+    const { rows } = await pool.query(`
+      SELECT 
+        messages.id AS id,
+        messages.title,
+        messages.text,
+        messages.added,
+        users.username
+      FROM 
+        messages
+      JOIN 
+        users_messages ON messages.id = users_messages.message_id
+      JOIN 
+        users ON users_messages.user_id = users.id;
+    `);
     return rows;
   } catch (e) {
     throw new Error("Couldn't get all messages");
