@@ -5,11 +5,13 @@ const passport = require("passport");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const pool = require("./db/pool");
+const assetsPath = path.join(__dirname, "public");
 require("dotenv").config();
 
 const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
 const sessionStore = new pgSession({ pool: pool });
