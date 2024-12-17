@@ -1,4 +1,4 @@
-# members-only
+# Members Only
 
 This project is a private space where members can share anonymous posts. Inside the clubhouse, members can view the authors of the posts, but to the outside world, the authors remain a mystery. 🕵️‍♂️
 
