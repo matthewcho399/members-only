@@ -28,7 +28,7 @@ router.get("/login-failure", (req, res) => {
 });
 
 router.get("/logout", function (req, res, next) {
-  //maybe change this to a POST request??
+  //maybe change this to a POST request?
   req.logout(function (err) {
     if (err) {
       return next(err);
