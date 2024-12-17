@@ -3,35 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <h1>Dashboard</h1>
-    <a href="/new-message">Create new message</a>
-    <% if (membership) { %>
-    <p>Hello you are a member</p>
-    <div class="messages-container">
-      <% if (locals.messages) {%> <% messages.forEach(message => { %>
-      <div>
-        <h3><%= message.title %></h3>
-        <p><%= message.text %></p>
-        <p>From: <%= message.username %></p>
-        <p>Added: <%= message.added %></p>
+    <div class="dashboard-container">
+      <h1 class="dashboard-title">Dashboard</h1>
+      <div class="dashboard-links">
+        <a href="/membership" class="dashboard-link">Join the club</a>
+        <a href="/new-message" class="dashboard-link">Create new message</a>
       </div>
-      <% }); %> <% } %>
-    </div>
-    <% } %> <% if (!membership) { %>
-    <p>Hello you are not a member</p>
-    <div class="messages-container">
-      <% if (locals.messages) {%> <% messages.forEach(message => { %>
-      <div>
-        <h3><%= message.title %></h3>
-        <p><%= message.text %></p>
-        <p>From: unknown</p>
-        <p>Added: unknown</p>
+
+      <% if (membership) { %>
+      <p class="membership-message">Welcome back, member!</p>
+      <div class="messages-container">
+        <% if (locals.messages) { %> <% messages.forEach(message => { %>
+        <div class="message-card">
+          <h3 class="message-title"><%= message.title %></h3>
+          <p class="message-text"><%= message.text %></p>
+          <p class="message-meta">From: <%= message.username %></p>
+          <p class="message-meta">Added: <%= message.added %></p>
+        </div>
+        <% }); %> <% } %>
       </div>
-      <% }); %> <% } %>
+      <% } else { %>
+      <p class="membership-message">Welcome!</p>
+      <div class="messages-container">
+        <% if (locals.messages) { %> <% messages.forEach(message => { %>
+        <div class="message-card">
+          <h3 class="message-title"><%= message.title %></h3>
+          <p class="message-text"><%= message.text %></p>
+          <p class="message-meta">From: unknown</p>
+          <p class="message-meta">Added: unknown</p>
+        </div>
+        <% }); %> <% } %>
+      </div>
+      <% } %>
+      <a href="/logout" class="logout-link">Logout</a>
     </div>
-    <% } %>
-    <a href="/logout">Logout</a>
   </body>
 </html>
