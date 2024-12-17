@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-const sessionStore = new pgSession({ pool: pool });
+const sessionStore = new pgSession({ pool: pool, createTableIfMissing: true });
 
 require("./config/passport");
 app.use(
