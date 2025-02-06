@@ -31,7 +31,7 @@ async function main() {
     console.log("seeding...");
 
     const client = new Client({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: process.env.DATABASE_LOCAL_URL,
     });
 
     try {

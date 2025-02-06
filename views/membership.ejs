@@ -2,16 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Sign Up</title>
+    <title>Memebership</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
+
   <body>
-    <h1>Join The Club?</h1>
-    <form action="membership" method="POST">
-      <%- include("./partials/errors.ejs") %>
-      <label for="passcode">Enter the passcode:</label>
-      <input id="passcode" name="passcode" type="text" />
-      <input type="submit" value="Submit" />
-    </form>
-    <% if (locals.msg) { %> <%= locals.msg %> <% } %>
+    <div class="membership-container">
+      <h1>Join The Club?</h1>
+      <form action="membership" method="POST">
+        <%- include("./partials/errors.ejs") %>
+        <label for="passcode">Enter the passcode:</label>
+        <input
+          class="membership-input"
+          id="passcode"
+          name="passcode"
+          type="text"
+          required
+        />
+        <input type="submit" value="Submit" />
+      </form>
+      <% if (locals.msg) { %>
+      <p><%= locals.msg %></p>
+      <% } %>
+    </div>
   </body>
 </html>
