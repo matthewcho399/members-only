@@ -3,16 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <title>New Message</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
+
   <body>
-    <h1>New Message</h1>
-    <form action="/new-message" method="POST">
-      <%- include("./partials/errors.ejs") %>
-      <label for="title">Title</label>
-      <input id="title" name="title" type="text" />
-      <label for="text">Text</label>
-      <input id="text" name="text" type="text" />
-      <input type="submit" value="Create Message" />
-    </form>
+    <div class="create-message-container">
+      <h1>New Message</h1>
+      <form class="message-form" action="/new-message" method="POST">
+        <%- include("./partials/errors.ejs") %>
+
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" required maxlength="100" />
+
+        <label for="text">Text</label>
+        <textarea id="text" name="text" required maxlength="500"></textarea>
+
+        <input type="submit" value="Create Message" />
+      </form>
+    </div>
   </body>
 </html>
