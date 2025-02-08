@@ -60,7 +60,9 @@ async function getAllMessages() {
       JOIN 
         users_messages ON messages.id = users_messages.message_id
       JOIN 
-        users ON users_messages.user_id = users.id;
+        users ON users_messages.user_id = users.id
+      ORDER BY 
+        messages.added DESC;
     `);
     return rows;
   } catch (e) {

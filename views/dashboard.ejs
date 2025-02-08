@@ -21,7 +21,9 @@
           <h3 class="message-title"><%= message.title %></h3>
           <p class="message-text"><%= message.text %></p>
           <p class="message-meta">From: <%= message.username %></p>
-          <p class="message-meta">Added: <%= message.added %></p>
+          <p class="message-meta">
+            Added: <%= message.added.toLocaleString() %>
+          </p>
         </div>
         <% }); %> <% } %>
       </div>
